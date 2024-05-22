@@ -2,7 +2,7 @@ name: Bump version on PR merge
 on:
   pull_request:
     branches:
-      - master
+      - main
       - develop
     types: closed
 
