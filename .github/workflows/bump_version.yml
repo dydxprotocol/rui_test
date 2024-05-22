@@ -1,0 +1,27 @@
+name: Bump version on PR merge
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+    types: closed
+
+jobs:
+  update_date:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          # Fetch full depth, otherwise the last step overwrites the last commit's parent, essentially removing the graph.
+          fetch-depth: 0
+
+      - name: Update version.txt
+        run: |
+          ./bump_version.sh
+      - name: Amend the last commit
+        run: |
+          git commit -a --amend --no-edit
+          git push --force-with-lease
+          echo "Complete"
