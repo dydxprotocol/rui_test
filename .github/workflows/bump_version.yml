@@ -22,6 +22,8 @@ jobs:
           ./bump_version.sh
       - name: Amend the last commit
         run: |
+          git config --global user.email "rui@dydx.exchange"
+          git config --global user.name "git bot"
           git commit -a --amend --no-edit
           git push --force-with-lease
           echo "Complete"
