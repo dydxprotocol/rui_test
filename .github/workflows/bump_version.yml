@@ -28,7 +28,7 @@ jobs:
 
       - name: Import bot's GPG key for signing commits
         id: import-gpg
-        uses:  mnrendra/sign-commit@v1
+        uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.BOT_GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.BOT_GPG_PASSPHRASE }}
