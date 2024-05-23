@@ -2,12 +2,6 @@
 
 # search for the first line that starts with "version" in build.gradle.kts
 # get the value in the quotes
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  SEDOPTION="-i '' -e"
-else
-  SEDOPTION="-i"
-fi
-
 VERSION=$(grep "^version = " build.gradle.kts | sed -n 's/version = "\(.*\)"/\1/p')
 
 # increment the version number
