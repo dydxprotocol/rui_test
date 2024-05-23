@@ -2,9 +2,10 @@
 
 # search for the first line that starts with "version" in build.gradle.kts
 # get the value in the quotes
-SEDOPTION=
-if [[ "$OSTYPE" != "darwin"* ]]; then
-  SEDOPTION="-i ''"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  SEDOPTION="-i '' -e"
+else
+  SEDOPTION="-i -e"
 fi
 
 VERSION=$(grep "^version = " build.gradle.kts | sed $SEDOPTION -n 's/version = "\(.*\)"/\1/p')
