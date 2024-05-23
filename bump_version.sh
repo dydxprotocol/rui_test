@@ -5,7 +5,7 @@
 if [[ "$OSTYPE" == "darwin"* ]]; then
   SEDOPTION="-i '' -e"
 else
-  SEDOPTION="-i -e"
+  SEDOPTION="-i"
 fi
 
 VERSION=$(grep "^version = " build.gradle.kts | sed $SEDOPTION -n 's/version = "\(.*\)"/\1/p')
