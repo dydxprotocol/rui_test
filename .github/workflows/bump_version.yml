@@ -10,7 +10,7 @@ permissions:
   contents: write
   
 jobs:
-  update_date:
+  update_version:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
@@ -20,9 +20,9 @@ jobs:
           # Fetch full depth, otherwise the last step overwrites the last commit's parent, essentially removing the graph.
           fetch-depth: 0
 
-      - name: Update version.txt
+      - name: Run bump_version.sh
         run: |
-          ./bump_version.sh
+          bash ./bump_version.sh
       - name: Amend the last commit
         run: |
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
