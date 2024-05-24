@@ -21,7 +21,7 @@ jobs:
           # Fetch full depth, otherwise the last step overwrites the last commit's parent, essentially removing the graph.
           fetch-depth: 0
           token: ${{ secrets.BOT_PAT }}
-          # persist-credentials: false # This is important if you have branch protection rules!
+          persist-credentials: false # This is important if you have branch protection rules!
 
       - name: Run bump_version.sh
         run: |
