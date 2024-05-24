@@ -38,8 +38,6 @@ jobs:
       - name: Bump version
         run: |
           git commit -m "Bump version" build.gradle.kts
-          git push --force-with-lease
-          echo "Complete"
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
           GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
