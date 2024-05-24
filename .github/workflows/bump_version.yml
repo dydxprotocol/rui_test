@@ -9,6 +9,7 @@ permissions:
   contents: write
   actions: write
 
+
 jobs:
   update_version:
     if: github.event.pull_request.merged == true
