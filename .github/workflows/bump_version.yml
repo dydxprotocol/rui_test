@@ -38,8 +38,12 @@ jobs:
         
       - name: Amend the last commit
         run: |
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git config --global user.name "${GITHUB_ACTOR}"
-          git commit -a --amend --no-edit
+          git commit -m "Bump version"
           git push --force-with-lease
           echo "Complete"
+        env:
+          GITHUB_TOKEN: ${{ secrets.OSLASH_BOT_GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
+          GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
+          GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}
+          GIT_COMMITTER_EMAIL: ${{ steps.import-gpg.outputs.email }}
