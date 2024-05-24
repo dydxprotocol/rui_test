@@ -46,7 +46,7 @@ jobs:
           git commit -a --amend --no-edit
           git push --force-with-lease
         env:
-           # GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
+            GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
             GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
             GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
             GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}
