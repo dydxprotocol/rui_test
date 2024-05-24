@@ -19,7 +19,7 @@ jobs:
         with:
           # Fetch full depth, otherwise the last step overwrites the last commit's parent, essentially removing the graph.
           fetch-depth: 0
-          persist-credentials: false # This is important if you have branch protection rules!
+          # persist-credentials: false # This is important if you have branch protection rules!
 
       - name: Run bump_version.sh
         run: |
