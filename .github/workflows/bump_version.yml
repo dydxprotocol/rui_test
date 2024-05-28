@@ -27,7 +27,6 @@ jobs:
         run: |
           ./bump_version.sh
           echo "bump_version_ret=$?" >> $GITHUB_OUTPUT
-          shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
           
