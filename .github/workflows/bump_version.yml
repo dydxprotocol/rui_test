@@ -23,8 +23,11 @@ jobs:
           #persist-credentials: false # This is important if you have branch protection rules!
 
       - name: Run bump_version.sh
+        id: bump-version
         run: |
-          bash ./bump_version.sh
+          ./bump_version.sh
+          echo "bump_version_ret=$?" >> $GITHUB_OUTPUT
+          shell: bash
           
       - name: Import bot's GPG key for signing commits
         id: import-gpg
@@ -38,15 +41,16 @@ jobs:
         
       - name: Sign commit and push changes
         run: |
-        
-          git config --global user.email ${{ steps.import-gpg.outputs.name }}
-          git config --global user.name ${{ steps.import-gpg.outputs.email }}
-          
-          #git commit -a --amend --no-edit
-          #git push --force-with-lease
-
-          git commit -S -m "Bump version" build.gradle.kts
-          git push
+          if [[ "${{ steps.bump-version.outputs.bump_version_ret }} != "0" ]]; then
+            git config --global user.email ${{ steps.import-gpg.outputs.name }}
+            git config --global user.name ${{ steps.import-gpg.outputs.email }}
+            
+            #git commit -a --amend --no-edit
+            #git push --force-with-lease
+  
+            git commit -S -m "Bump version" build.gradle.kts
+            git push
+          fi
         env:
           #  GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
             GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
