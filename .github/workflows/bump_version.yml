@@ -19,7 +19,7 @@ jobs:
           # Fetch full depth, otherwise the last step overwrites the last commit's parent, essentially removing the graph.
           fetch-depth: 0
           ref: ${{ github.head_ref }}
-         # persist-credentials: false # This is important if you have branch protection rules!
+          persist-credentials: false # This is important if you have branch protection rules!
 
       - name: Run bump_version.sh
         run: |
@@ -35,7 +35,7 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
         
-      - name: Bump version
+      - name: Sign commit and push changes
         run: |
         
           git config --global user.email ${{ steps.import-gpg.outputs.name }}
