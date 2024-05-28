@@ -1,9 +1,7 @@
 name: Bump version on PR merge
 on:
-  pull_request:
-    branches:
-      - main
-    types: closed
+  pull_request_target:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -12,7 +10,7 @@ permissions:
 
 jobs:
   update_version:
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
     runs-on: macos-latest
     steps:
       - name: checkout
@@ -21,11 +19,15 @@ jobs:
           # Fetch full depth, otherwise the last step overwrites the last commit's parent, essentially removing the graph.
           fetch-depth: 0
           token: ${{ secrets.BOT_PAT }}
-          persist-credentials: false # This is important if you have branch protection rules!
+          ref: ${{ github.head_ref }}
+          #persist-credentials: false # This is important if you have branch protection rules!
 
       - name: Run bump_version.sh
+        id: bump-version
         run: |
-          bash ./bump_version.sh
+          ./bump_version.sh
+          echo "bump_version_ret=$?" >> $GITHUB_OUTPUT
+          shell: bash
           
       - name: Import bot's GPG key for signing commits
         id: import-gpg
@@ -33,23 +35,24 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.BOT_GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.BOT_GPG_PASSPHRASE }}
-          git_config_global: true
+          #git_config_global: true
           git_user_signingkey: true
           git_commit_gpgsign: true
         
-      - name: Bump version
+      - name: Sign commit and push changes
         run: |
-        
-          git config --global user.email ${{ steps.import-gpg.outputs.name }}
-          git config --global user.name ${{ steps.import-gpg.outputs.email }}
-          
-          #git commit -a --amend --no-edit
-          #git push --force-with-lease
-
-          git commit -m "Bump version" build.gradle.kts
-          git push --force https://github.com/dydxprotocol/rui_test.git
+          if [[ "${{ steps.bump-version.outputs.bump_version_ret }} == "0" ]]; then
+            git config --global user.email ${{ steps.import-gpg.outputs.name }}
+            git config --global user.name ${{ steps.import-gpg.outputs.email }}
+            
+            #git commit -a --amend --no-edit
+            #git push --force-with-lease
+  
+            git commit -S -m "Bump version" build.gradle.kts
+            git push
+          fi
         env:
-            GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
+          #  GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
             GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
             GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
             GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}
