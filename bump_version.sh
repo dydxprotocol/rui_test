@@ -34,13 +34,13 @@ vercomp () {
 # Defining a temporary directory for cloning
 TMP_DIR=$(mktemp -d)
 
-git clone git@github.com:dydxprotocol/rui_test.git "$TMP_DIR/rui_test"
+curl https://raw.githubusercontent.com/dydxprotocol/rui_test/main/build.gradle.kts > $TMP_DIR/build.gradle.kts
 
 # search for the first line that starts with "version" in build.gradle.kts
 # get the value in the quotes
 VERSION=$(grep "^version = " build.gradle.kts | sed -n 's/version = "\(.*\)"/\1/p')
 
-REPO_VERSION=$(grep "^version = " $TMP_DIR/rui_test/build.gradle.kts | sed -n 's/version = "\(.*\)"/\1/p')
+REPO_VERSION=$(grep "^version = " $TMP_DIR/build.gradle.kts | sed -n 's/version = "\(.*\)"/\1/p')
 
 # call the version comparison function
 
@@ -50,10 +50,6 @@ vercomp $REPO_VERSION $VERSION
         1) SHOULD_BUMP=true ;;
         2) SHOULD_BUMP=false ;;
     esac
-
-echo $CUR_VERSION
-echo $VERSION
-echo $SHOULD_BUMP
 
 if [ $SHOULD_BUMP = false ]; then
     echo "Versions are the same. Exiting..."
