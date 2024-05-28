@@ -52,8 +52,9 @@ vercomp $REPO_VERSION $VERSION
     esac
 
 if [ $SHOULD_BUMP = false ]; then
-    echo "Versions are the same. Exiting..."
-    exit -1
+    echo "Repo version >= PR version... No need to bump."
+    export SHOULD_BUMP=false
+    exit 0
 fi
 
 # increment the version number
@@ -65,4 +66,5 @@ if [ -n "$NEW_VERSION" ]; then
   echo "Version bumped to $NEW_VERSION"
 fi
 
+export SHOULD_BUMP=true
 exit 0
