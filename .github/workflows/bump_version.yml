@@ -25,8 +25,9 @@ jobs:
       - name: Run bump_version.sh
         id: bump-version
         run: |
+          set +e
           ./bump_version.sh
-          echo "bump_version_ret=$SHOULD_BUMP" >> $GITHUB_OUTPUT
+          echo "bump_version_ret=$?" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
           
@@ -42,7 +43,7 @@ jobs:
         
       - name: Sign commit and push changes
         run: |
-          if [[ "${{ steps.bump-version.outputs.bump_version_ret }}" == "true" ]]; then
+          if [[ "${{ steps.bump-version.outputs.bump_version_ret }}" == "0" ]]; then
             git config --global user.email ${{ steps.import-gpg.outputs.name }}
             git config --global user.name ${{ steps.import-gpg.outputs.email }}
             
