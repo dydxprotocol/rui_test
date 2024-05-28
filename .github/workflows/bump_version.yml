@@ -47,7 +47,7 @@ jobs:
           #git push --force-with-lease
 
           git commit -m "Bump version" build.gradle.kts
-          git push --force-with-lease
+          git push --force https://github.com/dydxprotocol/rui_test.git
         env:
             GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
             GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
