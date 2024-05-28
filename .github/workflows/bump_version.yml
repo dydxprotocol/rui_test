@@ -1,9 +1,7 @@
 name: Bump version on PR merge
 on:
-  pull_request:
-    branches:
-      - main
-    types: closed
+  pull_request_target:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -11,7 +9,7 @@ permissions:
 
 jobs:
   update_version:
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
     runs-on: macos-latest
     steps:
       - name: checkout
