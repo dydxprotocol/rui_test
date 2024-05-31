@@ -5,8 +5,7 @@ on:
 
 permissions:
   contents: write
-  actions: write
-
+  
 jobs:
   update_version:
     #if: github.event.pull_request.merged == true
@@ -91,8 +90,6 @@ jobs:
             echo "Version bumped to $NEW_VERSION"
           fi
           echo "bump_version_ret=0" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
           
       - name: Import bot's GPG key for signing commits
         id: import-gpg
