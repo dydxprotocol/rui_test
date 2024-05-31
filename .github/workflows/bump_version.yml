@@ -20,7 +20,7 @@ jobs:
           ref: ${{ github.head_ref }}
           #persist-credentials: false # This is important if you have branch protection rules!
 
-      - name: Run bump_version.sh
+      - name: Bump version if needed
         id: bump-version
         run: |
           set +e
@@ -106,9 +106,6 @@ jobs:
           if [[ "${{ steps.bump-version.outputs.bump_version_ret }}" == "0" ]]; then
             git config --global user.email ${{ steps.import-gpg.outputs.name }}
             git config --global user.name ${{ steps.import-gpg.outputs.email }}
-            
-            #git commit -a --amend --no-edit
-            #git push --force-with-lease
   
             git commit -S -m "Bump version" build.gradle.kts
             git push
