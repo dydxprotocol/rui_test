@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: write
+
   
 jobs:
   update_version:
