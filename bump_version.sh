@@ -46,12 +46,12 @@ REPO_VERSION=$(grep "^version = " $TMP_DIR/build.gradle.kts | sed -n 's/version 
 
 vercomp $REPO_VERSION $VERSION
     case $? in
-        0) SHOULD_BUMP=false ;;
-        1) SHOULD_BUMP=false ;;
-        2) SHOULD_BUMP=true ;;
+        0) SHOULD_BUMP=true ;;
+        1) SHOULD_BUMP=true ;;
+        2) SHOULD_BUMP=false ;;
     esac
 
-if [ $SHOULD_BUMP = false ]; then
+if [ $SHOULD_BUMP == false ]; then
     echo "Repo version < PR version... No need to bump."
     exit -1
 fi
